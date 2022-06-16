@@ -1,4 +1,4 @@
-import './style.css'
+import "./style.css";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { Vector3 } from "@babylonjs/core/Maths/math";
 import { Mesh } from "@babylonjs/core/Meshes/mesh";
@@ -13,40 +13,40 @@ import "@babylonjs/core/Materials/standardMaterial";
 // Side-effects only imports allowing Mesh to create default shapes (to enhance tree shaking, the construction methods on mesh are not available if the meshbuilder has not been imported).
 import "@babylonjs/core/Meshes/Builders/groundBuilder";
 import "@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent";
-import "@babylonjs/core/Loading/Plugins/babylonFileLoader"
+import "@babylonjs/core/Loading/Plugins/babylonFileLoader";
 
-var createScene = function (engine: Engine) {
-  const  scene = new Scene(engine);
+const createScene = function (engine: Engine) {
+    const  scene = new Scene(engine);
 
-  const camera = new ArcRotateCamera("Camera", -3 * Math.PI / 4, Math.PI / 3, 50, Vector3.Zero(), scene);
-  camera.attachControl(canvas, true);
+    const camera = new ArcRotateCamera("Camera", -3 * Math.PI / 4, Math.PI / 3, 50, Vector3.Zero(), scene);
+    camera.attachControl(canvas, true);
   
-  const  light = new DirectionalLight("dir01", new Vector3(0, -1, 1), scene);
-  light.position = new Vector3(0, 15, -30);
+    const  light = new DirectionalLight("dir01", new Vector3(0, -1, 1), scene);
+    light.position = new Vector3(0, 15, -30);
 
-  var ground = Mesh.CreateGround("ground", 100, 100, 1, scene, false);
-  ground.receiveShadows = true;
+    const ground = Mesh.CreateGround("ground", 100, 100, 1, scene, false);
+    ground.receiveShadows = true;
 
-  // Shadow generator
-  const shadowGenerator = new ShadowGenerator(1024, light);
+    // Shadow generator
+    const shadowGenerator = new ShadowGenerator(1024, light);
       
-  SceneLoader.ImportMesh("him", import.meta.env.BASE_URL + "/scenes/Dude/", "Dude.babylon", scene, function (newMeshes2, _particleSystems2, skeletons2) {
-      var dude = newMeshes2[0];
-      dude.scaling = new Vector3(0.2, 0.2, 0.2);
+    SceneLoader.ImportMesh("him", import.meta.env.BASE_URL + "/scenes/Dude/", "Dude.babylon", scene, function (newMeshes2, _particleSystems2, skeletons2) {
+        const dude = newMeshes2[0];
+        dude.scaling = new Vector3(0.2, 0.2, 0.2);
           
-      //add dude, true means add children as well
-      shadowGenerator.addShadowCaster(dude, true);
+        //add dude, true means add children as well
+        shadowGenerator.addShadowCaster(dude, true);
               
-      scene.beginAnimation(skeletons2[0], 0, 100, true);
-  });
+        scene.beginAnimation(skeletons2[0], 0, 100, true);
+    });
 
-  return scene;
+    return scene;
 };
 
-const canvas: any = document.getElementById('app');
+const canvas: any = document.getElementById("app");
 const engine = new Engine(canvas);
 const scene = createScene(engine);
 
 engine.runRenderLoop(() => {
-  scene.render();
-})
+    scene.render();
+});
