@@ -1,4 +1,4 @@
-name: Build and deploy main
+name: Build and test main
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build and deploy main
+    name: Build main
     runs-on: ubuntu-latest
 
     steps:
@@ -19,19 +19,13 @@ jobs:
           path: ~/node_modules
           key: cache-${{ hashFiles('**/package-lock.json') }}
 
-      # pass --base for application to work under GitHub pages
       - name: Install and build
         run: |
           npm install
-          npm run build -- --base=/${{ github.event.repository.name }}/
-      - name: Deploy to github pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          branch: gh-pages
-          folder: dist
+          npm run build
 
-      - name: Publish deployed code 
-        uses: actions/upload-artifact@v2
-        with:
-          name: published
-          path: dist
+      - name: Test with Jest
+        run: npm run test
+      
+      - name: Lint with ESLint
+        run: npm run lint
